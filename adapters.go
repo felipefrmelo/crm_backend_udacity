@@ -74,8 +74,6 @@ func NewFiberServerAdapter() *FiberServerAdapter {
 	}
 }
 
-// StdHttpEngineAdapter
-
 type GorillaHttpEngineAdapter struct {
 	w http.ResponseWriter
 	r *http.Request
@@ -116,45 +114,34 @@ func NewGorillaServerAdapter() *GorillaServerAdapter {
 	}
 }
 
+func (g *GorillaServerAdapter) Get(path string, handler HandlerHttpEngine) {
+	g.methodAdapter(path, handler, "GET")
+}
+
+func (g *GorillaServerAdapter) Post(path string, handler HandlerHttpEngine) {
+	g.methodAdapter(path, handler, "POST")
+}
+
+func (g *GorillaServerAdapter) Put(path string, handler HandlerHttpEngine) {
+	g.methodAdapter(path, handler, "PUT")
+}
+
+func (g *GorillaServerAdapter) Delete(path string, handler HandlerHttpEngine) {
+	g.methodAdapter(path, handler, "DELETE")
+}
+
 func convertFiberRouteToGorilla(route string) string {
 	re := regexp.MustCompile(`:([a-zA-Z0-9_]+)`)
 	return re.ReplaceAllString(route, `{$1}`)
 }
 
-func (g *GorillaServerAdapter) Get(path string, handler HandlerHttpEngine) {
+func (g *GorillaServerAdapter) methodAdapter(path string, handler HandlerHttpEngine, method string) {
 	g.router.HandleFunc(convertFiberRouteToGorilla(path), func(w http.ResponseWriter, r *http.Request) {
 		err := handler(&GorillaHttpEngineAdapter{w: w, r: r})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-	}).Methods("GET")
-}
-
-func (g *GorillaServerAdapter) Post(path string, handler HandlerHttpEngine) {
-	g.router.HandleFunc(convertFiberRouteToGorilla(path), func(w http.ResponseWriter, r *http.Request) {
-		err := handler(&GorillaHttpEngineAdapter{w: w, r: r})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	}).Methods("POST")
-}
-
-func (g *GorillaServerAdapter) Put(path string, handler HandlerHttpEngine) {
-	g.router.HandleFunc(convertFiberRouteToGorilla(path), func(w http.ResponseWriter, r *http.Request) {
-		err := handler(&GorillaHttpEngineAdapter{w: w, r: r})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	}).Methods("PUT")
-}
-
-func (g *GorillaServerAdapter) Delete(path string, handler HandlerHttpEngine) {
-	g.router.HandleFunc(convertFiberRouteToGorilla(path), func(w http.ResponseWriter, r *http.Request) {
-		err := handler(&GorillaHttpEngineAdapter{w: w, r: r})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	}).Methods("DELETE")
+	}).Methods(method)
 }
 
 func (g *GorillaServerAdapter) Listen(addr string) error {

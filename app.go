@@ -17,10 +17,8 @@ type Server interface {
 
 func NewServer(repo CustomerRepository, server ...string) Server {
 
-	var serverName string
-	if len(server) == 0 {
-		serverName = "fiber"
-	} else {
+	serverName := "fiber"
+	if len(server) > 0 {
 		serverName = server[0]
 	}
 
