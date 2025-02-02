@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CRM Backend API</title>
+    <style>
+      /* Basic Reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1,
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      p {
+        margin-bottom: 20px;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        background: #e9ecef;
+        margin-bottom: 10px;
+        padding: 12px 20px;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      .note {
+        font-style: italic;
+        color: #555;
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to the CRM Backend API</h1>
+      <p>
+        This API provides a RESTful interface for managing customer data. It
+        supports operations such as retrieving customer lists, adding new
+        customers, updating existing records, and deleting customers. The server
+        is built using Go, leveraging both Fiber and Gorilla Mux frameworks for
+        HTTP handling.
+      </p>
+
+      <h2>Available Endpoints</h2>
+      <ul>
+        <li>GET /customers – Retrieve all customers</li>
+        <li>GET /customers/:id – Retrieve a specific customer by ID</li>
+        <li>POST /customers – Add a new customer</li>
+        <li>PUT /customers/:id – Update an existing customer's information</li>
+        <li>DELETE /customers/:id – Remove a customer</li>
+      </ul>
+    </div>
+  </body>
+</html>

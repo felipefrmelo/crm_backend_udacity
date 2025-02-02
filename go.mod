@@ -2,10 +2,13 @@ module github.com/felipefrmelo/crm_backend_udacity
 
 go 1.23.4
 
+require github.com/gofiber/template/html/v2 v2.1.3
+
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/gofiber/fiber/v2 v2.52.6 // indirect
-	github.com/gofiber/utils v0.0.10 // indirect
+	github.com/gofiber/template v1.8.3 // indirect
+	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/schema v1.1.0 // indirect

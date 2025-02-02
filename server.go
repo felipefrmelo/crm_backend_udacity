@@ -17,6 +17,7 @@ type HttpEngine interface {
 	Status(code int) HttpEngine
 	JSON(data interface{}) error
 	BodyParser(out interface{}) error
+	Render(name string, bind interface{}) error
 }
 
 type AppCrm struct {
@@ -26,6 +27,10 @@ type AppCrm struct {
 
 func (s *AppCrm) GetCustomers(c HttpEngine) error {
 	return c.Status(http.StatusOK).JSON(s.repo.GetCustomers())
+}
+
+func (s *AppCrm) Home(c HttpEngine) error {
+	return c.Render("index", map[string]string{"Title": "Test, World!"})
 }
 
 func (s *AppCrm) GetCustomerByID(c HttpEngine) error {

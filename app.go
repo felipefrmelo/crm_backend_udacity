@@ -27,6 +27,7 @@ func NewServer(repo CustomerRepository, server ...string) Server {
 	crmApp := new(AppCrm)
 	crmApp.repo = repo
 
+	app.Get("/", crmApp.Home)
 	app.Get("/customers", crmApp.GetCustomers)
 	app.Get("/customers/:id", crmApp.GetCustomerByID)
 	app.Post("/customers", crmApp.AddCustomer)

@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"regexp"
 
-	"github.com/gorilla/mux"
-
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
+	"github.com/gorilla/mux"
 )
 
 type FiberHttpEngineAdapter struct {
@@ -22,6 +22,10 @@ func (f *FiberHttpEngineAdapter) JSON(data interface{}) error {
 func (f *FiberHttpEngineAdapter) Status(code int) HttpEngine {
 	f.c.Status(code)
 	return f
+}
+
+func (f *FiberHttpEngineAdapter) Render(name string, bind interface{}) error {
+	return f.c.Render(name, bind)
 }
 
 func (f *FiberHttpEngineAdapter) Params(key string, d ...string) string {
@@ -69,8 +73,13 @@ func (f *FiberServerAdapter) Test(req *http.Request, msTimeout ...int) (*http.Re
 }
 
 func NewFiberServerAdapter() *FiberServerAdapter {
+	engine := html.New("./static", ".html")
 	return &FiberServerAdapter{
-		app: fiber.New(),
+		app: fiber.New(
+			fiber.Config{
+				Views: engine,
+			},
+		),
 	}
 }
 
@@ -104,13 +113,19 @@ func (g *GorillaHttpEngineAdapter) BodyParser(out interface{}) error {
 	return json.NewDecoder(g.r.Body).Decode(out)
 }
 
+func (g *GorillaHttpEngineAdapter) Render(name string, bind interface{}) error {
+	return nil
+}
+
 type GorillaServerAdapter struct {
 	router *mux.Router
 }
 
 func NewGorillaServerAdapter() *GorillaServerAdapter {
+	r := mux.NewRouter()
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static"))))
 	return &GorillaServerAdapter{
-		router: mux.NewRouter(),
+		router: r,
 	}
 }
 
